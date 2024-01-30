@@ -1,4 +1,5 @@
 const users = require('./users.api');
+const { getUsers, getUser } = require('../controller/users.controller');
 
 const userProperties =  {
   id: { type: 'string'},
@@ -24,7 +25,8 @@ const getUsersOption = {
         }
       }
     }
-  }
+  },
+  handler: getUsers
 }
 
 const getUserOption = {
@@ -35,21 +37,15 @@ const getUserOption = {
         properties: userProperties
       }
     }
-  }
+  },
+  handler: getUser
 }
 
 
 function usersRoutes(fastify, options, done) {
-  fastify.get('/users', getUsersOption, (req, res)=>{
-    res.send(users)
-  });
+  fastify.get('/users', getUsersOption);
   
-  fastify.get('/users/:id', getUserOption, (req, res)=>{
-    const { id } = req.params;
-    const user = users.find(user => user.id === Number(id));
-  
-    res.send(user);
-  });  
+  fastify.get('/users/:id', getUserOption);  
   
   done();
 }
